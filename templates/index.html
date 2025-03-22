@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<body style="background-color: rgb(203, 155, 155);">
+
+<h2>Delivery Portel Details</h2><br>
+
+<form action = "/submit" method = "POST">
+    <label for="market_id">market_id:</label><br>
+    <input type="number" id="market_id" name="market_id" value=1 min=1><br><br>
+
+    <label for="created_at">created_at:</label><br>
+    <input type="datetime-local" id="created_at" name="created_at" value=""><br><br>
+
+    <label for="actual_delivery_time">actual_delivery_time:</label><br>
+    <input type="datetime-local" id="actual_delivery_time" name="actual_delivery_time" value=""><br><br>
+
+    <label for="store_id">store_id:</label><br>
+    <input type="text" id="store_id" name="store_id" value="df263d996281d984952c07998dc54358"><br><br>
+
+    <label for="store_primary_category">store_primary_category:</label><br>
+    <input type="text" id="store_primary_category" name="store_primary_category" value="indian"><br><br>
+
+    <label for="order_protocol">order_protocol:</label><br>
+    <input type="number" id="order_protocol" name="order_protocol" value=2 min=1><br><br>
+
+    <label for="total_items">total_items:</label><br>
+    <input type="number" id="total_items" name="total_items" value=50 min=1><br><br>
+
+    <label for="subtotal">subtotal:</label><br>
+    <input type="number" id="subtotal" name="subtotal" value="1900"><br><br>
+
+    <label for="num_distinct_items">num_distinct_items:</label><br>
+    <input type="number" id="num_distinct_items" name="num_distinct_items" value="1"><br><br>
+
+    <label for="min_item_price">min_item_price:</label><br>
+    <input type="number" id="min_item_price" name="min_item_price" value=1400 min=1><br><br>
+
+    <label for="max_item_price">max_item_price:</label><br>
+    <input type="number" id="max_item_price" name="max_item_price" value=2000 min=10><br><br>
+
+    <label for="total_onshift_partners">total_onshift_partners:</label><br>
+    <input type="number" id="total_onshift_partners" name="total_onshift_partners" value=10 min=1><br><br>
+
+    <label for="total_busy_partners">total_busy_partners:</label><br>
+    <input type="number" id="total_busy_partners" name="total_busy_partners" value=15 min=1><br><br>
+
+    <label for="total_outstanding_orders">total_outstanding_orders:</label><br>
+    <input type="number" id="total_outstanding_orders" name="total_outstanding_orders" value=10 min=0><br><br>
+
+    <label for="diff">diff:</label><br>
+    <input type="number" id="diff" name="diff" value=01:02:59 min=00:00:00><br><br>
+
+    <label for="weekday">weekday:</label><br>
+    <input type="text" id="weekday" name="weekday" value="Sunday"><br><br>
+
+    <input type="submit" value="Submit">
+
+</form>
+
+<p> If you click the submit button, the form data will be sent to a page called "/submit".</p>
+
+<p style="margin-top": 20px;">Predicted Delivery Time : <b>{{ (result,0) }}</b></p>
+
+</body>
+</html>
