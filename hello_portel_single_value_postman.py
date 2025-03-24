@@ -4,11 +4,16 @@ from flask import Flask, render_template, request, jsonify
 import tensorflow as tf
 #from tensorflow.keras.models import load_model
 from tensorflow import keras
+
+#get_custom_objects = tf.keras.utils.get_custom_objects
+
 from tensorflow.keras.utils import get_custom_objects
 from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.models import load_model
 from tensorflow.keras.losses import MeanSquaredError
 from tensorflow.keras.utils import get_custom_objects
+#import keras
+
 
 import os
 print(os.path.exists("NN_model_Portel.h5"))  # Should print True

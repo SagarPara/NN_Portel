@@ -1,6 +1,6 @@
 import requests
 import pytest
-from sales_prediction import app
+from hello_portel_single_value_postman import app
 
 
 
@@ -18,15 +18,25 @@ def test_home(client):
 
 def test_submit(client):
     test_home = {
-        "Region_Code": "R1",
-        "Location_Type": "L2",
-        "Store_Type": "S1",
-        "Holiday": 1,
-        "Discount": "Yes",
-        "Order": 20
+        "market_id": 1,
+        "created_at": 42041.9335300926,
+        "actual_delivery_time": 42041.9772685185,
+        "store_id": 2,
+        "store_primary_category": 3,
+        "order_protocol": 1,
+        "total_items": 5,
+        "subtotal": 5000,
+        "num_distinct_items": 3,
+        "min_item_price": 100,
+        "max_item_price": 200,
+        "total_onshift_partners": 50,
+        "total_busy_partners": 10,
+        "total_outstanding_orders": 5,
+        "diff": 300,
+        "weekday": 5
         }
+
     
     resp = client.post("/submit", json=test_home)
     assert resp.status_code == 200
 
-    
