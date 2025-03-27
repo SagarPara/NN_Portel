@@ -1,30 +1,88 @@
-<html>
-    <h2> Final Results </h2><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Results</title>
+    <style>
+        body {
+            background-color: rgb(196, 217, 223);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 20px;
+            text-align: left;
+        }
+        .details-grid div {
+            padding: 5px;
+            font-size: 16px;
+        }
+        .details-grid b {
+            color: #0056b3;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #0056b3;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
 
-    <body style ="background-color: rgb(196,217,223);">
-        market_id : <b> {{market_id}}</b><br>
-        created_at : <b> {{created_at}}</b><br>
-        actual_delivery_time : <b> {{actual_delivery_time}}</b><br>
-        store_id : <b> {{store_id}}</b><br>
-        store_primary_category : <b> {{store_primary_category}}</b><br>
-        order_protocol : <b> {{order_protocol}}</b><br>
-        total_items : <b> {{total_items}}</b><br>
-        subtotal : <b> {{subtotal}}</b><br>
-        num_distinct_items : <b> {{num_distinct_items}}</b><br>
-        min_item_price : <b> {{min_item_price}}</b><br>
-        max_item_price : <b> {{max_item_price}}</b><br>
-        total_onshift_partners : <b> {{total_onshift_partners}}</b><br>
-        total_busy_partners : <b> {{total_busy_partners}}</b><br>
-        total_outstanding_orders : <b> {{total_outstanding_orders}}</b><br>
-        diff : <b> {{diff}}</b><br>
-        weekday : <b> {{weekday}}</b><br>
-        
+    <div class="container">
+        <h2>Final Results</h2>
 
-        <br><br><br>
-        
-        <p style="margin-top": 20px;">Predicted Delivery Time : <b>{{ round(result,0) }}</b></p>
-    </body>
-    
+        <div class="details-grid">
+            <div>Market ID: <b>{{ market_id }}</b></div>
+            <div>Created At: <b>{{ created_at }}</b></div>
+            <div>Actual Delivery Time: <b>{{ actual_delivery_time }}</b></div>
+            <div>Store ID: <b>{{ store_id }}</b></div>
+            <div>Store Category: <b>{{ store_primary_category }}</b></div>
+            <div>Order Protocol: <b>{{ order_protocol }}</b></div>
+            <div>Total Items: <b>{{ total_items }}</b></div>
+            <div>Subtotal: <b>{{ subtotal }}</b></div>
+            <div>Distinct Items: <b>{{ num_distinct_items }}</b></div>
+            <div>Min Item Price: <b>{{ min_item_price }}</b></div>
+            <div>Max Item Price: <b>{{ max_item_price }}</b></div>
+            <div>Onshift Partners: <b>{{ total_onshift_partners }}</b></div>
+            <div>Busy Partners: <b>{{ total_busy_partners }}</b></div>
+            <div>Outstanding Orders: <b>{{ total_outstanding_orders }}</b></div>
+            <div>Time Difference: <b>{{ diff }}</b></div>
+            <div>Weekday: <b>{{ weekday }}</b></div>
+        </div>
+
+        <div class="result-box">
+            Predicted Delivery Time: {{ round(result,0) }}
 
 
+            
+        </div>
+    </div>
+
+</body>
 </html>

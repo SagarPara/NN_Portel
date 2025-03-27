@@ -1,65 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
-<body style="background-color: rgb(203, 155, 155);">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Portal</title>
+    <style>
+        body {
+            background-color: rgb(203, 155, 155);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            width: 60%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .full-width {
+            grid-column: span 2;
+        }
+        .submit-button {
+            display: flex;
+            justify-content: center;
+        }
+        .submit-button input {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-button input:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
 
-<h2>Delivery Portel Details</h2><br>
+<div class="form-container">
+    <h2>Delivery Portal Details</h2>
+    
+    <form action="/submit" method="GET" class="form-grid">
+        <div class="form-group">
+            <label for="market_id">Market ID:</label>
+            <input type="number" id="market_id" name="market_id" value="1" min="1">
+        </div>
 
-<form action = "/submit" method = "POST">
-    <label for="market_id">market_id:</label><br>
-    <input type="number" id="market_id" name="market_id" value=1 min=1><br><br>
+        <div class="form-group">
+            <label for="created_at">Created At:</label>
+            <input type="datetime-local" id="created_at" name="created_at">
+        </div>
 
-    <label for="created_at">created_at:</label><br>
-    <input type="datetime-local" id="created_at" name="created_at" value=""><br><br>
+        <div class="form-group">
+            <label for="actual_delivery_time">Actual Delivery Time:</label>
+            <input type="datetime-local" id="actual_delivery_time" name="actual_delivery_time">
+        </div>
 
-    <label for="actual_delivery_time">actual_delivery_time:</label><br>
-    <input type="datetime-local" id="actual_delivery_time" name="actual_delivery_time" value=""><br><br>
+        <div class="form-group">
+            <label for="store_id">Store ID:</label>
+            <input type="text" id="store_id" name="store_id" value="df263d996281d984952c07998dc54358">
+        </div>
 
-    <label for="store_id">store_id:</label><br>
-    <input type="text" id="store_id" name="store_id" value="df263d996281d984952c07998dc54358"><br><br>
+        <div class="form-group">
+            <label for="store_primary_category">Store Primary Category:</label>
+            <input type="text" id="store_primary_category" name="store_primary_category" value="american">
+        </div>
 
-    <label for="store_primary_category">store_primary_category:</label><br>
-    <input type="text" id="store_primary_category" name="store_primary_category" value="indian"><br><br>
+        <div class="form-group">
+            <label for="order_protocol">Order Protocol:</label>
+            <input type="number" id="order_protocol" name="order_protocol" value="1" min="1">
+        </div>
 
-    <label for="order_protocol">order_protocol:</label><br>
-    <input type="number" id="order_protocol" name="order_protocol" value=2 min=1><br><br>
+        <div class="form-group">
+            <label for="total_items">Total Items:</label>
+            <input type="number" id="total_items" name="total_items" value="4" min="1">
+        </div>
 
-    <label for="total_items">total_items:</label><br>
-    <input type="number" id="total_items" name="total_items" value=50 min=1><br><br>
+        <div class="form-group">
+            <label for="subtotal">Subtotal:</label>
+            <input type="number" id="subtotal" name="subtotal" value="3441">
+        </div>
 
-    <label for="subtotal">subtotal:</label><br>
-    <input type="number" id="subtotal" name="subtotal" value="1900"><br><br>
+        <div class="form-group">
+            <label for="num_distinct_items">Num Distinct Items:</label>
+            <input type="number" id="num_distinct_items" name="num_distinct_items" value="4">
+        </div>
 
-    <label for="num_distinct_items">num_distinct_items:</label><br>
-    <input type="number" id="num_distinct_items" name="num_distinct_items" value="1"><br><br>
+        <div class="form-group">
+            <label for="min_item_price">Min Item Price:</label>
+            <input type="number" id="min_item_price" name="min_item_price" value="557" min="1">
+        </div>
 
-    <label for="min_item_price">min_item_price:</label><br>
-    <input type="number" id="min_item_price" name="min_item_price" value=1400 min=1><br><br>
+        <div class="form-group">
+            <label for="max_item_price">Max Item Price:</label>
+            <input type="number" id="max_item_price" name="max_item_price" value="1239" min="10">
+        </div>
 
-    <label for="max_item_price">max_item_price:</label><br>
-    <input type="number" id="max_item_price" name="max_item_price" value=2000 min=10><br><br>
+        <div class="form-group">
+            <label for="total_onshift_partners">Total Onshift Partners:</label>
+            <input type="number" id="total_onshift_partners" name="total_onshift_partners" value="33" min="1">
+        </div>
 
-    <label for="total_onshift_partners">total_onshift_partners:</label><br>
-    <input type="number" id="total_onshift_partners" name="total_onshift_partners" value=10 min=1><br><br>
+        <div class="form-group">
+            <label for="total_busy_partners">Total Busy Partners:</label>
+            <input type="number" id="total_busy_partners" name="total_busy_partners" value="14" min="1">
+        </div>
 
-    <label for="total_busy_partners">total_busy_partners:</label><br>
-    <input type="number" id="total_busy_partners" name="total_busy_partners" value=15 min=1><br><br>
+        <div class="form-group">
+            <label for="total_outstanding_orders">Total Outstanding Orders:</label>
+            <input type="number" id="total_outstanding_orders" name="total_outstanding_orders" value="10" min="0">
+        </div>
 
-    <label for="total_outstanding_orders">total_outstanding_orders:</label><br>
-    <input type="number" id="total_outstanding_orders" name="total_outstanding_orders" value=10 min=0><br><br>
+        <div class="form-group">
+            <label for="diff">Diff:</label>
+            <input type="text" id="diff" name="diff" value="01:02:59" pattern="^([0-9]{2}):([0-9]{2}):([0-9]{2})$" placeholder="HH:MM:SS">
+        </div>
 
-    <label for="diff">diff:</label><br>
-    <input type="number" id="diff" name="diff" value=01:02:59 min=00:00:00><br><br>
+        <div class="form-group">
+            <label for="weekday">Weekday:</label>
+            <input type="text" id="weekday" name="weekday" value="Friday">
+        </div>
 
-    <label for="weekday">weekday:</label><br>
-    <input type="text" id="weekday" name="weekday" value="Sunday"><br><br>
-
-    <input type="submit" value="Submit">
-
-</form>
-
-<p> If you click the submit button, the form data will be sent to a page called "/submit".</p>
-
-<p style="margin-top": 20px;">Predicted Delivery Time : <b>{{ (result,0) }}</b></p>
+        <div class="form-group full-width submit-button">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
