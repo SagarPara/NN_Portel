@@ -32,11 +32,14 @@ def test_submit(client):
         "total_onshift_partners": 50,
         "total_busy_partners": 10,
         "total_outstanding_orders": 5,
-        "diff": 300,
+        "diff": "01:02:59",
         "weekday": 5
         }
 
     
-    resp = client.post("/submit", json=test_home)
+    # Sending data as query parameters for GET request
+    resp = client.get("/submit", query_string=test_home)
+    
+    # Assert that the response status code is 200 (OK)
     assert resp.status_code == 200
 
