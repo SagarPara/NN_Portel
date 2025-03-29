@@ -87,13 +87,13 @@ app = Flask(__name__)
 def hello_world():
     return render_template("index.html")
 
-@app.route("/submit", methods=["GET"])
+@app.route("/submit", methods=["POST"])
 def submit_form():
     #if request.method == "POST":
     #    return "I will make the prediction but this on GET method"
     #else:
         
-        sales_req = request.args
+        sales_req = request.form
 
         required_fields = [
             "market_id", "created_at", "actual_delivery_time", "store_id",
@@ -167,7 +167,7 @@ def submit_form():
 
 
 
-
+            
             # Encode store_primary_category
             category = sales_req.get("store_primary_category", "")
             encoded_category = category_encoder.transform([category])[0] if category in category_encoder.classes_ else -1
@@ -200,7 +200,6 @@ def submit_form():
             delivery_day, delivery_month, delivery_year = extract_date_components(actual_delivery_time_timestamp)
 
             
-            
             # Convert input to NumPy array and reshape for model
             input_data = np.array([[
                 float(sales_req.get("market_id", 0)), 
@@ -226,14 +225,9 @@ def submit_form():
             
             
             print("Input Data:", input_data)
-
-            # Step 4: Convert input to NumPy array
-            #features = np.array([list(input_data.values())])    
-            features = input_data
-
-
+            
             # Preprocess data (if needed)
-            features_scaled = scaler.transform(features)  # Apply scaling
+            features_scaled = scaler.transform(input_data)  # Apply scaling
 
 
             #Make predictions
@@ -241,14 +235,39 @@ def submit_form():
             print("Predicted Result:", result)
 
             
+            # Render the result.html template and pass data
+            return render_template("result.html", 
+                market_id=sales_req["market_id"],
+                created_at=sales_req["created_at"],
+                actual_delivery_time=sales_req["actual_delivery_time"],
+                store_id=sales_req["store_id"],
+                store_primary_category=sales_req["store_primary_category"],
+                order_protocol=sales_req["order_protocol"],
+                total_items=sales_req["total_items"],
+                subtotal=sales_req["subtotal"],
+                num_distinct_items=sales_req["num_distinct_items"],
+                min_item_price=sales_req["min_item_price"],
+                max_item_price=sales_req["max_item_price"],
+                total_onshift_partners=sales_req["total_onshift_partners"],
+                total_busy_partners=sales_req["total_busy_partners"],
+                total_outstanding_orders=sales_req["total_outstanding_orders"],
+                diff=sales_req["diff"],
+                weekday=sales_req["weekday"],
+                result=result,
+                round=round)  # Send prediction result
             
+
+
+
+
+            '''
             #TO GET SINGLE VALUE CODE FROM POSTMAN WE WILL UNCOMMENT ON BELOW CODE
             return jsonify({"Predicted Delivery Time": round(float(result), 2)})  # Ensure JSON serializable output    
-
+            '''
         except ValueError as e:
              
-            return jsonify({"error": f"Invalid input: {str(e)}"}), 400
-
+            return f"Error: {e}", 500
+            
             
 
 
