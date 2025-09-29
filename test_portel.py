@@ -21,10 +21,10 @@ def test_home(client):
 def test_submit(client):
     test_home = {
         "market_id": 1,
-        "created_at": 42041.9335300926,
-        "actual_delivery_time": 42041.9772685185,
+        "created_at": "2025-09-29T12:00",          # correct format
+        "actual_delivery_time": "2025-09-29T13:00", # correct format
         "store_id": 2,
-        "store_primary_category": 3,
+        "store_primary_category": "Grocery",      # match a known category
         "order_protocol": 1,
         "total_items": 5,
         "subtotal": 5000,
@@ -33,9 +33,8 @@ def test_submit(client):
         "max_item_price": 200,
         "total_onshift_partners": 50,
         "total_busy_partners": 10,
-        "total_outstanding_orders": 5,
-        }
-
+        "total_outstanding_orders": 5
+    }
     
     # Sending data as query parameters for GET request
     resp = client.post("/submit", data=test_home)
