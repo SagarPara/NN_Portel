@@ -154,32 +154,32 @@ def submit_form():
 
             
             created_at_str = sales_req.get("created_at", "")
-            actual_delivery_time_str = sales_req.get("actual_delivery_time", "")
+            # actual_delivery_time_str = sales_req.get("actual_delivery_time", "")
 
             # Convert string to datetime
             try:
                 created_at_dt = datetime.strptime(created_at_str, "%Y-%m-%dT%H:%M")
-                actual_delivery_dt = datetime.strptime(actual_delivery_time_str, "%Y-%m-%dT%H:%M")
+                # actual_delivery_dt = datetime.strptime(actual_delivery_time_str, "%Y-%m-%dT%H:%M")
             except ValueError as e:
                 return jsonify({"error": f"Invalid datetime format: {e}"}), 400
             
-            diff = actual_delivery_dt - created_at_dt  # timedelta object
+            # diff = actual_delivery_dt - created_at_dt  # timedelta object
 
-            diff_in_seconds = diff.total_seconds()
-            delivery_minutes = diff_in_seconds / 60
-            diff_hours = diff_in_seconds / 3600
+            # diff_in_seconds = diff.total_seconds()
+            # delivery_minutes = diff_in_seconds / 60
+            # diff_hours = diff_in_seconds / 3600
 
             # ----------------------------
             # 3. Extract datetime features
             # ----------------------------
-            encoded_weekday = actual_delivery_dt.weekday()      # Monday=0, Sunday=6
+            encoded_weekday = created_at_dt.weekday()      # Monday=0, Sunday=6
             created_hour = created_at_dt.hour
             created_dayofweek = created_at_dt.weekday()         # Same as above
             created_month = created_at_dt.month
 
-            print("Time Difference (Seconds):", diff_in_seconds)
-            print("Time Difference (Minutes):", delivery_minutes)
-            print("Time Difference (Hours):", diff_hours)
+            # print("Time Difference (Seconds):", diff_in_seconds)
+            # print("Time Difference (Minutes):", delivery_minutes)
+            # print("Time Difference (Hours):", diff_hours)
             print("Created Hour:", created_hour)
             print("Created Day of Week:", created_dayofweek)
             print("Created Month:", created_month)
@@ -210,8 +210,8 @@ def submit_form():
                 float(sales_req.get("total_onshift_partners", 0)), 
                 float(sales_req.get("total_busy_partners", 0)),
                 float(sales_req.get("total_outstanding_orders", 0)), 
-                diff_in_seconds,  
-                delivery_minutes,
+                # diff_in_seconds,  
+                # delivery_minutes,
                 # diff_hours,
                 encoded_weekday,
                 created_hour, 
@@ -235,7 +235,7 @@ def submit_form():
             return render_template("result.html", 
                 market_id=sales_req["market_id"],
                 created_at=sales_req["created_at"],
-                actual_delivery_time=sales_req["actual_delivery_time"],
+                # actual_delivery_time=sales_req["actual_delivery_time"],
                 store_id=sales_req["store_id"],
                 store_primary_category=sales_req["store_primary_category"],
                 order_protocol=sales_req["order_protocol"],
