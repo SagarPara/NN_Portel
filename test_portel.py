@@ -1,3 +1,5 @@
+### test-portel.py
+
 import requests
 import pytest
 from hello_portel_single_value_postman import app
@@ -38,7 +40,7 @@ def test_submit(client):
 
     
     # Sending data as query parameters for GET request
-    resp = client.post("/submit", query_string=test_home)
+    resp = client.post("/submit", data=test_home)
     
     # Assert that the response status code is 200 (OK)
     assert resp.status_code == 200
