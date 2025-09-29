@@ -87,12 +87,10 @@ app = Flask(__name__)
 def hello_world():
     return render_template("index.html")
 
-@app.route("/submit", methods=["POST"])
+@app.route("/submit", methods=["GET", "POST"])
 def submit_form():
-    #if request.method == "POST":
-    #    return "I will make the prediction but this on GET method"
-    #else:
-        
+    if request.method == "POST":
+
         sales_req = request.form
 
         required_fields = [
