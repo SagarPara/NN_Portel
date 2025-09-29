@@ -266,7 +266,8 @@ def submit_form():
              
             return f"Error: {e}", 500
             
-            
+    # GET request handling
+    return jsonify({"message": "Please use POST to submit data"}), 405            
 
 
 
