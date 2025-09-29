@@ -23,7 +23,7 @@ from tensorflow.keras.utils import get_custom_objects
 
 
 import os
-print(os.path.exists("NN_model_Portel.h5"))  # Should print True
+print(os.path.exists("NN_model_Portel_v1.h5"))  # Should print True
 
 print("TensorFlow version:", tf.__version__)
 print("Keras version:", keras.__version__)
@@ -33,7 +33,7 @@ print("Keras version:", keras.__version__)
 get_custom_objects().update({'LeakyReLU': LeakyReLU})
 
 # Then load the model
-model = load_model("NN_model_Portel.h5", custom_objects={'LeakyReLU': LeakyReLU}, compile=False)
+model = load_model("NN_model_Portel_v1.h5", custom_objects={'LeakyReLU': LeakyReLU}, compile=False)
 
 #Manally reassign the loss function
 model.compile(loss=MeanSquaredError(), optimizer='adam')
@@ -96,25 +96,7 @@ def submit_form():
 
         sales_req = request.form
 
-        required_fields = [
-            "market_id", "created_at", "actual_delivery_time", "store_id",
-            "store_primary_category", "order_protocol", "total_items",
-            "subtotal", "num_distinct_items", "min_item_price",
-            "max_item_price", "total_onshift_partners", "total_busy_partners",
-            "total_outstanding_orders", "diff", "weekday"
-        ]
-
-        # Validate if all fields exist in the request
-        for field in required_fields:
-            if field not in sales_req:
-                return jsonify({"error": f"Missing field: {field}"}), 400
-            
-
-        # Convert 'diff' (time difference) into seconds
-        diff_str = sales_req.get("diff", "00:00:00")  # Default to zero
-        h, m, s = map(int, diff_str.split(":"))
-        diff_seconds = h * 3600 + m * 60 + s  # Convert to seconds
-
+        
 
         try:    
             
@@ -132,19 +114,6 @@ def submit_form():
             
             
             
-            '''
-            # Convert store_id to Dataframe before transformation
-            store_id_df = pd.DataFrame({"store_id": [store_id]})
-            print("store_id DataFrame:\n", store_id_df)
-
-            if store_id in target_encoder.mapping.keys():
-                #store_id_encoded = target_encoder.transform(store_id_df).iloc[0, 0]
-                store_id_encoded = target_encoder.transform(store_id_df)["store_id"].values[0]
-            else:
-                store_id_encoded = 0  # Default value for unseen categories
-            '''
-
-
             # Check if the store_id exists in the target encoder mapping
             if store_id in target_encoder.mapping["store_id"].index:
                 store_id_encoded = target_encoder.mapping["store_id"].loc[store_id]
@@ -166,9 +135,6 @@ def submit_form():
 
 
 
-
-
-            
             # Encode store_primary_category
             category = sales_req.get("store_primary_category", "")
             encoded_category = category_encoder.transform([category])[0] if category in category_encoder.classes_ else -1
@@ -184,22 +150,49 @@ def submit_form():
             print("Normalized Weekday:", weekday)
             print("Encoded Weekday:", encoded_weekday)
 
-            def extract_date_components(date_str):
-            #"""Helper function to extract day, month, and year from a date string."""
-                if date_str:
-                    try:
-                        dt = datetime.strptime(date_str, "%Y-%m-%dT%H:%M")
-                        return dt.day, dt.month, dt.year
-                    except ValueError:
-                        return 0, 0, 0  # Default values if parsing fails
-                return 0, 0, 0  # Default if no date is provided
 
+
+            
+            created_at_str = sales_req.get("created_at", "")
+            actual_delivery_time_str = sales_req.get("actual_delivery_time", "")
+
+            # Convert string to datetime
+            try:
+                created_at_dt = datetime.strptime(created_at_str, "%Y-%m-%dT%H:%M")
+                actual_delivery_dt = datetime.strptime(actual_delivery_time_str, "%Y-%m-%dT%H:%M")
+            except ValueError as e:
+                return jsonify({"error": f"Invalid datetime format: {e}"}), 400
+            
+            diff = actual_delivery_dt - created_at_dt  # timedelta object
+
+            diff_in_seconds = diff.total_seconds()
+            delivery_minutes = diff_in_seconds / 60
+            diff_hours = diff_in_seconds / 3600
+
+            # ----------------------------
+            # 3. Extract datetime features
+            # ----------------------------
+            encoded_weekday = actual_delivery_dt.weekday()      # Monday=0, Sunday=6
+            created_hour = created_at_dt.hour
+            created_dayofweek = created_at_dt.weekday()         # Same as above
+            created_month = created_at_dt.month
+
+            print("Time Difference (Seconds):", diff_in_seconds)
+            print("Time Difference (Minutes):", delivery_minutes)
+            print("Time Difference (Hours):", diff_hours)
+            print("Created Hour:", created_hour)
+            print("Created Day of Week:", created_dayofweek)
+            print("Created Month:", created_month)
+            print("Encoded Weekday:", encoded_weekday)
+
+            
+            """    
             created_at_timestamp = sales_req.get("created_at", "")
             actual_delivery_time_timestamp = sales_req.get("actual_delivery_time", "")
 
             created_day, created_month, created_year = extract_date_components(created_at_timestamp)
             delivery_day, delivery_month, delivery_year = extract_date_components(actual_delivery_time_timestamp)
-
+            """
             
             # Convert input to NumPy array and reshape for model
             input_data = np.array([[
@@ -217,11 +210,13 @@ def submit_form():
                 float(sales_req.get("total_onshift_partners", 0)), 
                 float(sales_req.get("total_busy_partners", 0)),
                 float(sales_req.get("total_outstanding_orders", 0)), 
-                #diff_seconds/60, # Convert to minutes 
+                diff_in_seconds,  
+                delivery_minutes,
+                # diff_hours,
                 encoded_weekday,
-                created_day, 
-                created_month, 
-                created_year,  # Encoded weekday
+                created_hour, 
+                created_dayofweek, 
+                created_month,  # Encoded weekday
             ]], dtype=np.float32)
             
             
@@ -252,8 +247,8 @@ def submit_form():
                 total_onshift_partners=sales_req["total_onshift_partners"],
                 total_busy_partners=sales_req["total_busy_partners"],
                 total_outstanding_orders=sales_req["total_outstanding_orders"],
-                diff=sales_req["diff"],
-                weekday=sales_req["weekday"],
+                # diff=sales_req["diff"],
+                # weekday=sales_req["weekday"],
                 result=result,
                 round=round)  # Send prediction result
             

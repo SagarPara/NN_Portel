@@ -34,8 +34,6 @@ def test_submit(client):
         "total_onshift_partners": 50,
         "total_busy_partners": 10,
         "total_outstanding_orders": 5,
-        "diff": "01:02:59",
-        "weekday": 5
         }
 
     
