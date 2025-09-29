@@ -38,7 +38,7 @@ def test_submit(client):
 
     
     # Sending data as query parameters for GET request
-    resp = client.get("/submit", query_string=test_home)
+    resp = client.post("/submit", query_string=test_home)
     
     # Assert that the response status code is 200 (OK)
     assert resp.status_code == 200
